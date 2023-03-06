@@ -2,7 +2,7 @@
 
 This project is an E.C.F. done at M2i the sixth of march 2023.
 
-## Foramtion C.D.A.
+## Formation C.D.A.
 
 Formation concepteur et développeur d'applications commencée le 05/12/2022.
 
