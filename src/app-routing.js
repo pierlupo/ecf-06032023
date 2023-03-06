@@ -4,7 +4,8 @@ import ErrorPage from "./routes/ErrorPage";
 import HomePage from "./routes/HomePage";
 import SignForm from "./routes/SignFormPage";
 import ImcForm from "./routes/imcs/ImcForm";
-// import calculIMC from "./routes/imcs/ImcCalc";
+import CalculIMC from "./routes/imcs/CalculImc";
+
 
 // const authCheck = (roleChecked) => {
 //   const role = localStorage.getItem('role')
@@ -27,8 +28,8 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       // {
-      //   path: "/",
-      //   element: <calculIMC />,
+      //   path: "/imc/add",
+      //   element: <CalculIMC />,
       // },
       {
         path: "/Sign+Up",
@@ -39,16 +40,16 @@ const router = createBrowserRouter([
         path: "/Sign+In",
         element: <SignForm />,
       },
+      // {
+      //   path: "imc/add",
+      //   element: <ImcForm />,
+      // },
       {
-        path: "/imcs/add",
+        path: "/imc/edit/:imcId",
         element: <ImcForm />,
       },
       {
-        path: "/imcs/edit/:imcId",
-        element: <ImcForm />,
-      },
-      {
-        path: "/imcs/delete/:imcId",
+        path: "/imc/delete/:imcId",
         element: <ImcForm />,
       },
     ],

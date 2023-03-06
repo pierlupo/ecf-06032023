@@ -19,13 +19,13 @@ export const fetchImcs = createAsyncThunk("imcs/fetchImcs", async () => {
   return tmpArray;
 });
 
-export const addImc = createAsyncThunk("imcs/addImc", async (ContactValues) => {
+export const addImc = createAsyncThunk("imcs/addImc", async (ImcValues) => {
   const response = await fetch(`${BASE_DB_URL}imcs.json`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(ContactValues),
+    body: JSON.stringify(ImcValues),
   });
 
   if (!response.ok) {
@@ -34,18 +34,18 @@ export const addImc = createAsyncThunk("imcs/addImc", async (ContactValues) => {
 
   const data = await response.json();
 
-  return { id: data.name, ...ContactValues };
+  return { id: data.name, ...ImcValues };
 });
 
 export const editImc = createAsyncThunk(
   "imcs/editImc",
-  async ({ id, ...ContactValues }) => {
+  async ({ id, ...ImcValues }) => {
     const response = await fetch(`${BASE_DB_URL}imcs/${id}.json`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(ContactValues),
+      body: JSON.stringify(ImcValues),
     });
 
     if (!response.ok) {

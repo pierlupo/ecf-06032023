@@ -1,22 +1,70 @@
 import "./App.css";
-import { Link, NavLink, Outlet } from "react-router-dom";
-import { useState } from "react";
+import { Link, NavLink, Outlet, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useState, useRef } from "react";
 import { removeUser } from "./routes/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { addImc, deleteImc, editImc } from "./routes/imcs/imcSlice";
+
 
 // import { fetchImcs } from "./routes/imcs/ImcsSlice";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
+  const { imcId } = useParams();
+  // const imcs = useSelector((state) => state.imcs.imcs).find(
+  //   (i) => i.id === imcId);
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode") ?? "add";
+
+
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [poids, setPoids] = useState("");
   const [taille, setTaille] = useState("");
   const [message, setMessage] = useState("");
   const [imcMessage, setImcMessage] = useState("");  
 
+  const poidsRef = useRef();
+  const tailleRef = useRef();
+  const messageRef = useRef();
+  const imcMessageref = useRef();
 
-  function calculIMC(){
+  
+  const submitFormHandler = async (e) => {
+    e.preventDefault();
+
+    if (mode === "delete") {
+      await dispatch(deleteImc(imcId));
+    } else {
+      const poids = poidsRef.current.value;
+      const taille = tailleRef.current.value;
+      const message = messageRef.current.value;
+      const imcMessage = imcMessageref.current.value
+    //   const date = dateRef.current.value;
+
+      const ImcValues = {
+        poids,
+        taille,
+        message,
+        imcMessage
+        // date,
+      };
+
+      console.log(ImcValues);
+
+      if (mode === "add") {
+        await dispatch(addImc(ImcValues));
+      } else if (mode === "edit") {
+        await dispatch(editImc({ id: imcId, ...ImcValues }));
+      }
+    }
+
+    navigate("/");
+  };
+
+  const calculIMC = () => {
   const t = taille / 100;
   const imc = poids / (t * t);
 
@@ -80,30 +128,15 @@ function App() {
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav me-auto">
-                <Link className="navbar-brand p-2" to="/">
+                <NavLink className="navbar-brand p-2" to="/">
                   <i className="bi bi-globe"></i> IMC-APP
-                </Link>
+                </NavLink>
                 {/* <li className="nav-item">
-          <Link className="nav-link active" aria-current="page" to="/">Accueil</Link>
-        </li> */}
-                <li className="nav-item">
-                  <Link className="nav-link " to={`/imcs/add`}>
+                  <NavLink className="nav-link " to="/imc/add">
                     Calculer votre IMC
                     <i className="bi bi-plus ms-2 btn btn-outline-success rounded-circle"></i>
-                  </Link>
-                </li>
-
-                {/* <form className="d-flex">
-                  <input
-                    className="form-control me-2"
-                    type="search"
-                    placeholder="Entrer un n° de flashCard"
-                    aria-label="Search"
-                  ></input>
-                  <button className="btn btn-outline-success" type="submit">
-                    GO
-                  </button>
-                </form> */}
+                  </NavLink>
+                </li> */}
               </ul>
               <div className="d-flex justify-content-center">
                 {user ? (
@@ -138,30 +171,72 @@ function App() {
       </header>
       <main>
         <Outlet />
-        <h1>Calcul de l'IMC</h1>
-      
+        {!user &&(<h3 className="m-3">Veuillez vous connecter afin de calculer votre I.M.C.</h3>
+        )}
+        {user && (<> <h1>Calcul de l'IMC</h1>
+          <div className="d-flex flex-column justify-content-center align-items-center col-6 offset-3 my-2">
+            <div className="col-6">
+          <form onSubmit={submitFormHandler}>
           <input 
             type="text"
-            placeholder="Poids em [KG] Ex: 75"
+            disabled={mode === "delete"}
+            required={mode !== "delete"}
+            className="form-control my-2 p-2 bg-light"
+            placeholder="Poids en KG Ex:70"
             value={poids}
+            ref={poidsRef}
+            //   defaultValue={imcs?.poids}
             onChange={ (e) => setPoids(e.target.value) }
           />
 
           <input 
             type="text"
-            placeholder="Taille em [CM] Ex: 170"
+            disabled={mode === "delete"}
+            required={mode !== "delete"}
+            className="form-control my-2 p-2 bg-light"
+            placeholder="Taille en CM Ex:180"
             value={taille}
+            ref={tailleRef}
+            //   defaultValue={imcs?.taille}
             onChange={ (e) => setTaille(e.target.value) }
           />
-
-          <button onClick={calculIMC}>
+          <div className="text-end">
+            <button onClick={calculIMC}
+              className={`btn btn-${
+                mode === "delete"
+                  ? "danger"
+                  : mode === "edit"
+                  ? "warning"
+                  : "success"
+              }`}
+            >
+              <i
+                className={`bi bi-${
+                  mode === "delete"
+                    ? "trash"
+                    : mode === "edit"
+                    ? "pencil-square"
+                    : "plus-circle"
+                }`}
+              ></i>{" "}
+              {mode === "delete"
+                ? "Confirmer"
+                : mode === "edit"
+                ? "Editer"
+                : "Calculer" }
+            </button>
+          </div>
+          <button  className="btn btn-outline-secondary p-2 my-2" onClick={calculIMC}>
             Calculer
           </button>
-
-            <h2>
-                {message} <br/>
-                {imcMessage}
-            </h2>
+          </form>
+            <h4 ref={messageRef}>{message}</h4> <br/>
+            <h4 ref={imcMessageref}>{imcMessage}</h4>
+            
+            </div>
+            </div>
+          </>) }
+            
       </main>
       </div>
     

@@ -6,13 +6,10 @@ const ImcDisplay = ({ imcId }) => {
     (i) => i.id === imcId
   );
   const user = useSelector((state) => state.auth.user);
-  //const setSelectedContactAndFormMode = props.setSelectedContactAndFormMode
 
   return (
     <div className="col-12 my-3 border border-info rounded p-3">
-      {/* <div className="col-4 d-flex justify-content-center">
-          <img src={contact.avatarURL} alt="Contact Avatar" style={{width: "250px", height: "250px", objectFit: "contain", borderRadius: "50%"}} />
-        </div> */}
+
       <div className="col-12">
         <div className="d-flex align-items-center justify-content-center">
           <h3  >

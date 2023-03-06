@@ -10,7 +10,7 @@ const HomePage = () => {
         <hr />
         <img  className="BalanceLogo" src={BalanceLogo} alt="weight-person"/>
 
-        <p>
+        <p className="p-2 my-3">
         L’indice de masse corporelle ou IMC (en anglais, body mass index ou BMI) est une grandeur qui permet d'estimer la corpulence d’une personne.
         Inventé au milieu du XIXe siècle par Adolphe Quetelet, mathématicien belge et l'un des fondateurs de la statistique moderne, cet indice est appelé aussi l'indice de Quetelet. 
         </p>
