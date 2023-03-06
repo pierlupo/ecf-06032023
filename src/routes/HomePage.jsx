@@ -1,10 +1,12 @@
-import BalanceLogo from "../assets/img/istockphoto-655245878-170x170.jpg"
+import BalanceLogo from "../assets/img/istockphoto-1078218542-170x170.jpg"
 import "../App.css"
+//import calculIMC from "./imcs/ImcCalc";
+
 const HomePage = () => {
   return (
     <>
       <div className="col-6 offset-3 rounded bg-dark text-light p-3 mt-2">
-        <h3>Welcome on your Body Mass Index App</h3>
+        <h3>Bienvenue sur imc-app</h3>
         <hr />
         <img  className="BalanceLogo" src={BalanceLogo} alt="weight-person"/>
 
@@ -15,6 +17,7 @@ const HomePage = () => {
       <hr />
       </div>
       
+
 
 
     </>
